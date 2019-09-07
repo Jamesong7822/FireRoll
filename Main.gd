@@ -18,11 +18,6 @@ func _ready():
 	
 func loadMenuPage():
 	get_tree().change_scene("res://HUD/Menu Page.tscn")
-	#print ("Loading Menu Page")
-	#$"PAGES".layer = 1
-	#$"Outdoor Map".get_tree().paused = true
-	#$"PAGES/Death Page".visible = false
-	#$"PAGES/Menu Page".layer = 2
 	
 func saveData(filepath=""):
 	print("Saving Game")
@@ -66,6 +61,14 @@ func loadData(filepath=""):
 				
 			#print(currentLine["Name"], " Setting: ", key, " as ", currentLine[key]) 
 			saveNode.set(key, currentLine[key])
+			
+		if currentLine["Name"] == "Basic Sword":
+			var node = get_node(currentLine["parent"]).get_node(currentLine["Name"])
+			node.Level = int(currentLine["Level"])
+			node.Damage = int(currentLine["Damage"])
+			node.Knockback = int(currentLine["Knockback"])
+			node.CriticalChance = float(currentLine["CriticalChance"])
+			node.CriticalMultiplier = float(currentLine["CriticalMultiplier"])
 		
 #		player.Health = int(currentLine["health"])
 #		player.level = int(currentLine["level"])
@@ -94,7 +97,7 @@ func startGame():
 	$"Outdoor Map".get_tree().paused = false
 	
 	
-	print ($"Outdoor Map/Bushes/Player/Base/Weapon".get_child(1))
+	print ($"Outdoor Map/Bushes/Player/Base/Weapon".get_node("Basic Sword").Level)
 	
 	
 

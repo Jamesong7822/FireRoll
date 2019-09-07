@@ -16,7 +16,7 @@ var currentFacing
 var Stamina = 100
 var gold = 0
 
-var basicSword = preload("res://Items/Weapons/Melee/Basic Sword.tscn")
+onready var basicSword = preload("res://Items/Weapons/Melee/Basic Sword.tscn")
 export var HUDSCENE = preload("res://HUD/HUD.tscn")
 var HEALTHBAR = preload("res://HUD/Health Bar.tscn")
 var STAMINABAR = preload("res://HUD/Stamina Bar.tscn")
@@ -49,8 +49,7 @@ func _ready():
 	weapon.set_position($WeaponPos.position)
 	
 	$Base/Weapon.add_child(weapon)
-	
-	print ($Base/Weapon.get_child_count())
+
 	
 	# Connect Signals
 	connect("UpAttack", $Base/Weapon.get_child(0), "on_Up_Attack")
@@ -72,6 +71,7 @@ func _ready():
 func _physics_process(delta):
 	#print ("Level: ", level)
 	#print ("Gold: ", gold)
+	
 	movementHandler(delta)
 	animationHandler()
 	hasLevelUp()
