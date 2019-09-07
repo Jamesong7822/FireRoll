@@ -1,1 +1,2 @@
-{"current weapon":0,"experience":200,"filename":"res://Character/Player/Player.tscn","gold":19,"health":100,"level":0,"movespeed":300,"name":"Player","parent":"/root/Main/Outdoor Map/Bushes","stamina":100}
+{"Health":100,"Name":"Player","Speed":300,"Stamina":100,"currentWeapon":0,"experience":2400,"filename":"res://Character/Player/Player.tscn","gold":933,"level":1,"parent":"/root/Main/Outdoor Map/Bushes"}
+{"CriticalChance":13,"CriticalMultiplier":0.8,"Damage":25,"Knockback":31,"Level":2,"Name":"Basic Sword","filename":"res://Items/Weapons/Melee/Basic Sword.tscn","parent":"/root/Main/Outdoor Map/Bushes/Player/Base/Weapon"}

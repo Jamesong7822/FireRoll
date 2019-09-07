@@ -10,6 +10,7 @@ var player
 signal Attack
 
 func _ready():
+	#Name = $".".name
 	$AnimationPlayer.play("Setup")
 	$"Attack Up Area/CollisionShape2D".disabled = true
 	$"Attack Down Area/CollisionShape2D".disabled = true
@@ -69,12 +70,12 @@ func generateSaveData():
 	var saveDict = {
 		"filename": get_filename(),
 		"parent": get_parent().get_path(),
-		"name": Name,
-		"level": Level,
-		"damage": Damage,
-		"knockback": Knockback,
-		"critchance": CriticalChance,
-		"critmultiplier": CriticalMultiplier
+		"Name": Name,
+		"Level": Level,
+		"Damage": Damage,
+		"Knockback": Knockback,
+		"CriticalChance": CriticalChance,
+		"CriticalMultiplier": CriticalMultiplier
 		}
 		
 	return saveDict

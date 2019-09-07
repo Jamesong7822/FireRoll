@@ -38,4 +38,4 @@ position = Vector2( 559.906, 210.038 )
 [node name="Drops Holder" type="Node2D" parent="Bushes"]
 
 [node name="Player Spawn" type="Position2D" parent="."]
-position = Vector2( 1343.83, 91.5762 )
+position = Vector2( 1343.07, 147.698 )

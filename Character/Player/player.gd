@@ -50,6 +50,8 @@ func _ready():
 	
 	$Base/Weapon.add_child(weapon)
 	
+	print ($Base/Weapon.get_child_count())
+	
 	# Connect Signals
 	connect("UpAttack", $Base/Weapon.get_child(0), "on_Up_Attack")
 	connect("DownAttack", $Base/Weapon.get_child(0), "on_Down_Attack")
@@ -215,14 +217,14 @@ func generateSaveData():
 	var saveDict = {
 		"filename": get_filename(),
 		"parent": get_parent().get_path(),
-		"name": Name,
+		"Name": Name,
 		"level": level,
 		"experience": experience,
-		"current weapon": currentWeapon,
+		"currentWeapon": currentWeapon,
 		"gold": gold,
-		"health": Health,
-		"stamina": Stamina,
-		"movespeed": Speed		
+		"Health": Health,
+		"Stamina": Stamina,
+		"Speed": Speed		
 		}
 		
 	return saveDict

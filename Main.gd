@@ -44,25 +44,35 @@ func loadData(filepath=""):
 	if not loadGame.file_exists("res://savegame.save"):
 		return
 	# Delete the loading nodes
-	var saveNodes = get_tree().get_nodes_in_group("Saving")
-	for node in saveNodes:
-		node.queue_free()	
+	#var saveNodes = get_tree().get_nodes_in_group("Saving")
+	#for node in saveNodes:
+	#	node.queue_free()	
 		
 	loadGame.open("res://savegame.save", File.READ)
 	while not loadGame.eof_reached():
 		var currentLine = parse_json(loadGame.get_line())
-		var loadedNode = load(currentLine["filename"]).instance()
-		get_node(currentLine["parent"]).add_child(loadedNode)
-		#print (currentLine)
-		# Set Player stats
 		if currentLine == null:
 			continue
-		player.Health = int(currentLine["health"])
-		player.level = int(currentLine["level"])
-		player.Stamina = int(currentLine["stamina"])
-		player.experience = int(currentLine["experience"])
-		player.gold = int(currentLine["gold"])
-		player.Speed = int(currentLine["movespeed"])
+		
+		#var loadedNode = load(currentLine["filename"]).instance()
+		#get_node(currentLine["parent"]).add_child(loadedNode)
+		#print (currentLine)
+		# Set Player stats
+		var saveNode = get_node(currentLine["parent"]).get_node(currentLine["Name"])
+		#print (saveNode)
+		for key in currentLine.keys():
+			if key == "filename" or key == "parent" or key == "Name":
+				continue
+				
+			#print(currentLine["Name"], " Setting: ", key, " as ", currentLine[key]) 
+			saveNode.set(key, currentLine[key])
+		
+#		player.Health = int(currentLine["health"])
+#		player.level = int(currentLine["level"])
+#		player.Stamina = int(currentLine["stamina"])
+#		player.experience = int(currentLine["experience"])
+#		player.gold = int(currentLine["gold"])
+#		player.Speed = int(currentLine["movespeed"])
 	
 func startGame():
 	print ("STARTING GAME")
@@ -82,6 +92,9 @@ func startGame():
 	$"PAGES".layer = 2
 	$"PAGES/Shop HUD".layer = -1
 	$"Outdoor Map".get_tree().paused = false
+	
+	
+	print ($"Outdoor Map/Bushes/Player/Base/Weapon".get_child(1))
 	
 	
 
