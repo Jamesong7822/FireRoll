@@ -55,7 +55,7 @@ func on_Move():
 func calculateUpgradeCost():
 	# Takes current level of weapon and calculates upgrade cost!
 	var upgradeCost = int(Level * exp(1.2) * 25)
-	print ("Upgrade Cost: ", upgradeCost)
+	#print ("Upgrade Cost: ", upgradeCost)
 	return upgradeCost
 	
 func upgrade():
