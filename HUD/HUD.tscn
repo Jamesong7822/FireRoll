@@ -47,7 +47,6 @@ margin_right = 575.0
 margin_bottom = 64.0
 
 [node name="Gold" parent="Center Bot/Player Stats" instance=ExtResource( 6 )]
-editor/display_folded = true
 margin_left = 625.0
 margin_right = 701.0
 

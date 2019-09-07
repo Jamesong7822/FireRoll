@@ -3,6 +3,18 @@ extends CanvasLayer
 func _ready():
 	pass
 
+func _physics_process(delta):
+	var mainScene = $".".get_parent().get_parent()
+	var currentWeapon = mainScene.get_node("Outdoor Map/Bushes/Player/Base/Weapon").get_child(0)
+	var upgradeCost = currentWeapon.calculateUpgradeCost()
+	$"MarginContainer/VBoxContainer/HBoxContainer/Attributes Container/Button Container/Upgrade Button".text = "Upgrade ("+str(upgradeCost)+ ")"
+	var playerScene = mainScene.get_node("Outdoor Map/Bushes/Player")
+	
+	var currentGold = playerScene.gold
+	if currentGold >= upgradeCost:
+		$"MarginContainer/VBoxContainer/HBoxContainer/Attributes Container/Button Container/Upgrade Button".disabled = false
+	else:
+		$"MarginContainer/VBoxContainer/HBoxContainer/Attributes Container/Button Container/Upgrade Button".disabled = true
 
 func _on_Back_Button_pressed():
 	# Hide the Canvas Layer
@@ -13,12 +25,15 @@ func _on_Back_Button_pressed():
 func _on_Upgrade_Button_pressed():
 	var mainScene = $".".get_parent().get_parent()
 	var currentWeapon = mainScene.get_node("Outdoor Map/Bushes/Player/Base/Weapon").get_child(0)
+	var HUDScene = mainScene.get_node("PAGES/HUD/Center Bot/Player Stats/Gold/HBoxContainer/Label")
 	var upgradeCost = currentWeapon.calculateUpgradeCost()
 	var playerScene = mainScene.get_node("Outdoor Map/Bushes/Player")
 	var currentGold = playerScene.gold
 	if currentGold >= upgradeCost:
 		currentWeapon.upgrade()
 		playerScene.gold -= upgradeCost
+		HUDScene.text = str(playerScene.gold)
+		mainScene.get_node("PAGES/HUD").updateShopInfo()
 	
 func updateShopInfo():
 	# Grab current weapon stuff
