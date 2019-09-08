@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Character/Player/player.gd" type="Script" id=1]
 [ext_resource path="res://Character/Player/Assets/Link_Spritesheet.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Audio/Hurt.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Audio/Pickup_Coin.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Audio/LevelUp.wav" type="AudioStream" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 15.0
@@ -207,3 +208,6 @@ position = Vector2( -4.41507, 16.1803 )
 
 [node name="Coins PickUp" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
+
+[node name="Level Up" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )

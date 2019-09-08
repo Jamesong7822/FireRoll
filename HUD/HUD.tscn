@@ -10,6 +10,7 @@
 [ext_resource path="res://HUD/Assets/Back To Menu Icon.png" type="Texture" id=8]
 
 [node name="HUD" type="CanvasLayer"]
+pause_mode = 2
 script = ExtResource( 1 )
 
 [node name="Center Bot" type="MarginContainer" parent="."]
@@ -40,11 +41,15 @@ margin_left = 408.0
 margin_top = 3.0
 margin_right = 461.0
 margin_bottom = 61.0
+focus_mode = 1
+enabled_focus_mode = 1
 
 [node name="ShopButton" parent="Center Bot/Player Stats" instance=ExtResource( 5 )]
 margin_left = 511.0
 margin_right = 575.0
 margin_bottom = 64.0
+focus_mode = 1
+enabled_focus_mode = 1
 
 [node name="Gold" parent="Center Bot/Player Stats" instance=ExtResource( 6 )]
 margin_left = 625.0
@@ -75,6 +80,7 @@ margin_top = 40.0
 margin_right = 104.0
 margin_bottom = 104.0
 texture_normal = ExtResource( 8 )
+[connection signal="pressed" from="Center Bot/Player Stats/Skill Up Button" to="." method="_on_Skill_Up_Button_pressed"]
 [connection signal="pressed" from="Center Bot/Player Stats/ShopButton" to="." method="_on_ShopButton_pressed"]
 
 [editable path="Center Bot/Player Stats/Gold"]

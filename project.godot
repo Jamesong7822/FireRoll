@@ -19,6 +19,11 @@ config/name="FireRoll"
 run/main_scene="res://HUD/Menu Page.tscn"
 config/icon="res://icon.png"
 
+[debug]
+
+gdscript/warnings/unassigned_variable=false
+gdscript/warnings/unused_variable=false
+
 [importer_defaults]
 
 texture={

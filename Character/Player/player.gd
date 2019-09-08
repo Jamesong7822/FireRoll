@@ -8,6 +8,7 @@ enum WEAPONS {WEAPON_BASIC_SWORD}
 
 var experience = 0
 var level = 0
+var skillPoints = 0
 var currentHealth
 var currentStamina
 var currentState
@@ -211,6 +212,8 @@ func hasLevelUp():
 	var currentlvl = int(0.03 * sqrt(experience))
 	if currentlvl > level:
 		level = currentlvl
+		skillPoints += 1
+		$"Level Up".play()
 	
 func generateSaveData():
 	print ("Generating Player Save Data")
@@ -221,6 +224,7 @@ func generateSaveData():
 		"level": level,
 		"experience": experience,
 		"currentWeapon": currentWeapon,
+		"skillPoints": skillPoints,
 		"gold": gold,
 		"Health": Health,
 		"Stamina": Stamina,

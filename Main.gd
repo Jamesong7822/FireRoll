@@ -88,12 +88,6 @@ func startGame():
 		child.queue_free()
 	for child in $"Outdoor Map/Bushes/Drops Holder".get_children():
 		child.queue_free()
-	# Hide the Menu Screen
-	$"PAGES/Death Page".visible = false
-	$PAGES.layer = 2
-	#$"PAGES/Menu Page".layer = -1
-	$"PAGES".layer = 2
-	$"PAGES/Shop HUD".layer = -1
 	$"Outdoor Map".get_tree().paused = false
 	
 	
@@ -122,8 +116,7 @@ func _on_Player_Dead():
 	# Unhide Death Screen (To DO)
 	# Call Some Reset Function
 	get_tree().paused = true
-	$"PAGES/Death Page".visible = true
-	$DeathTimer.start()
+	$HUD.showDeathHUD()
 	# Call save function
 	saveData()
 	
@@ -138,29 +131,3 @@ func dropLoot(gold, pos):
 		g.position = newPos
 		$"Outdoor Map/Bushes/Drops Holder".add_child(g)
 	
-
-
-func _on_ShopButton_pressed():
-	#print ("SHOP")
-	$"PAGES/HUD/Center Bot/Player Stats/ShopButton/AudioStreamPlayer2D".play()
-	get_tree().paused = true
-	$"PAGES/Shop HUD".layer = 2
-	updateShopInfo()
-	
-func updateShopInfo():
-	# Grab current weapon stuff
-	var currentWeapon = $"Outdoor Map/Bushes/Player/Base/Weapon".get_child(0)
-	var shopHUDNode = $"PAGES/Shop HUD/MarginContainer/VBoxContainer/HBoxContainer"
-	# Update Name
-	shopHUDNode.get_node("Weapons Container/Sub Container/Name").text = currentWeapon.Name
-	
-	# Update Level
-	shopHUDNode.get_node("Weapons Container/Sub Container/Level").text = "Level " + str(currentWeapon.Level)
-	
-	# Update Description
-	
-	# Update Attributes
-
-
-func _on_DeathTimer_timeout():
-	loadMenuPage()
