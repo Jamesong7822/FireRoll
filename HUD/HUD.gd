@@ -39,3 +39,16 @@ func _on_Skill_Up_Button_pressed():
 	add_child(a)
 	get_tree().paused = true
 	
+
+
+func _on_Menu_Button_pressed():
+	# save Stuff
+	var mainScene = get_parent()
+	mainScene.saveData()
+	$Popup.popup()
+	$Popup/Timer.start()
+	
+
+func _on_Timer_timeout():
+	var mainScene = get_parent()
+	mainScene.loadMenuPage()

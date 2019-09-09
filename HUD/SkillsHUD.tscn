@@ -74,7 +74,7 @@ margin_right = 114.0
 margin_bottom = 64.0
 texture = ExtResource( 3 )
 
-[node name="Health Upgrade Button" type="Button" parent="MarginContainer/MarginContainer/VBoxContainer/Tier 1 Skills" groups=[
+[node name="Health" type="Button" parent="MarginContainer/MarginContainer/VBoxContainer/Tier 1 Skills" groups=[
 "Upgrade",
 ]]
 margin_left = 124.0
@@ -88,7 +88,7 @@ margin_right = 263.0
 margin_bottom = 64.0
 texture = ExtResource( 4 )
 
-[node name="Speed Upgrade Button" type="Button" parent="MarginContainer/MarginContainer/VBoxContainer/Tier 1 Skills" groups=[
+[node name="Speed" type="Button" parent="MarginContainer/MarginContainer/VBoxContainer/Tier 1 Skills" groups=[
 "Upgrade",
 ]]
 margin_left = 273.0
@@ -102,7 +102,7 @@ margin_right = 412.0
 margin_bottom = 64.0
 texture = ExtResource( 5 )
 
-[node name="Stamina Upgrade Button2" type="Button" parent="MarginContainer/MarginContainer/VBoxContainer/Tier 1 Skills" groups=[
+[node name="Stamina" type="Button" parent="MarginContainer/MarginContainer/VBoxContainer/Tier 1 Skills" groups=[
 "Upgrade",
 ]]
 margin_left = 422.0

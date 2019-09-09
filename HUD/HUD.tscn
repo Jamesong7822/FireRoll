@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://HUD/HUD.gd" type="Script" id=1]
 [ext_resource path="res://HUD/Health Bar.tscn" type="PackedScene" id=2]
@@ -6,8 +6,9 @@
 [ext_resource path="res://HUD/SkillUpButton.tscn" type="PackedScene" id=4]
 [ext_resource path="res://HUD/ShopButton.tscn" type="PackedScene" id=5]
 [ext_resource path="res://HUD/Gold.tscn" type="PackedScene" id=6]
-[ext_resource path="res://HUD/Weapon HUD.tscn" type="PackedScene" id=7]
+[ext_resource path="res://HUD/EXP HUD.tscn" type="PackedScene" id=7]
 [ext_resource path="res://HUD/Assets/Back To Menu Icon.png" type="Texture" id=8]
+[ext_resource path="res://HUD/Assets/PopUp.png" type="Texture" id=9]
 
 [node name="HUD" type="CanvasLayer"]
 pause_mode = 2
@@ -52,21 +53,29 @@ focus_mode = 1
 enabled_focus_mode = 1
 
 [node name="Gold" parent="Center Bot/Player Stats" instance=ExtResource( 6 )]
+editor/display_folded = true
 margin_left = 625.0
 margin_right = 701.0
 
 [node name="Top Right" type="MarginContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -413.0
-margin_bottom = 140.0
-custom_constants/margin_right = 20
-custom_constants/margin_top = 20
+margin_left = -145.0
+margin_bottom = 75.0
+size_flags_horizontal = 5
+size_flags_vertical = 5
+custom_constants/margin_right = 40
+custom_constants/margin_top = 40
 
-[node name="Weapon HUD" parent="Top Right" instance=ExtResource( 7 )]
-margin_top = 20.0
-margin_right = 393.0
-margin_bottom = 140.0
+[node name="EXP HUD" parent="Top Right" instance=ExtResource( 7 )]
+anchor_left = 0.0
+anchor_right = 0.0
+margin_left = 0.0
+margin_top = 40.0
+margin_right = 105.0
+margin_bottom = 75.0
+size_flags_horizontal = 5
+size_flags_vertical = 5
 
 [node name="Top Left" type="MarginContainer" parent="."]
 margin_right = 40.0
@@ -80,7 +89,45 @@ margin_top = 40.0
 margin_right = 104.0
 margin_bottom = 104.0
 texture_normal = ExtResource( 8 )
+
+[node name="Popup" type="Popup" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+
+[node name="TextureRect" type="TextureRect" parent="Popup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -240.0
+margin_top = -135.0
+margin_right = 240.0
+margin_bottom = 135.0
+texture = ExtResource( 9 )
+
+[node name="Label" type="Label" parent="Popup"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -7.0
+margin_right = 20.0
+margin_bottom = 7.0
+text = "Saved"
+align = 1
+valign = 1
+
+[node name="Timer" type="Timer" parent="Popup"]
 [connection signal="pressed" from="Center Bot/Player Stats/Skill Up Button" to="." method="_on_Skill_Up_Button_pressed"]
 [connection signal="pressed" from="Center Bot/Player Stats/ShopButton" to="." method="_on_ShopButton_pressed"]
+[connection signal="pressed" from="Top Left/Menu Button" to="." method="_on_Menu_Button_pressed"]
+[connection signal="timeout" from="Popup/Timer" to="." method="_on_Timer_timeout"]
 
 [editable path="Center Bot/Player Stats/Gold"]

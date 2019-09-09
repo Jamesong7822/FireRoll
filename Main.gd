@@ -90,10 +90,6 @@ func startGame():
 		child.queue_free()
 	$"Outdoor Map".get_tree().paused = false
 	
-	
-	print ($"Outdoor Map/Bushes/Player/Base/Weapon".get_node("Basic Sword").Level)
-	
-	
 
 func _on_EnemySpawnTimer_timeout():
 	# Spawn Enemies
