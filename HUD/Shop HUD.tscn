@@ -6,9 +6,11 @@
 
 [node name="Shop HUD" type="CanvasLayer"]
 pause_mode = 2
+editor/display_folded = true
 script = ExtResource( 1 )
 
 [node name="Control" type="CenterContainer" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -60,7 +62,6 @@ margin_bottom = 170.0
 size_flags_horizontal = 3
 
 [node name="Weapons" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/Weapons Container"]
-editor/display_folded = true
 margin_right = 212.0
 margin_bottom = 96.0
 size_flags_vertical = 3
@@ -99,7 +100,6 @@ margin_bottom = 32.0
 text = "Right"
 
 [node name="Sub Container" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/Weapons Container"]
-editor/display_folded = true
 margin_top = 100.0
 margin_right = 212.0
 margin_bottom = 114.0
@@ -213,7 +213,6 @@ margin_bottom = 14.0
 text = "Crit Mult"
 
 [node name="Knockback" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/Attributes Container"]
-editor/display_folded = true
 margin_top = 72.0
 margin_right = 192.0
 margin_bottom = 86.0

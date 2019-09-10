@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Character/Player/player.gd" type="Script" id=1]
 [ext_resource path="res://Character/Player/Assets/Link_Spritesheet.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Audio/Hurt.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Audio/Pickup_Coin.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Audio/LevelUp.wav" type="AudioStream" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 15.0
@@ -85,6 +86,21 @@ tracks/0/keys = {
 "values": [ 9, 10, 11, 10 ]
 }
 
+[sub_resource type="Animation" id=12]
+resource_name = "Level Up"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Base/LevelUp:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
 [sub_resource type="Animation" id=7]
 resource_name = "Take_Damage"
 length = 0.6
@@ -101,7 +117,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Base/Particles2D:visible")
+tracks/1/path = NodePath("Base/Blood:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -138,6 +154,24 @@ scale = 3.0
 scale_curve = SubResource( 10 )
 color = Color( 1, 0, 0, 1 )
 
+[sub_resource type="Curve" id=14]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.992654, 0.39995 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=15]
+curve = SubResource( 14 )
+
+[sub_resource type="ParticlesMaterial" id=13]
+emission_shape = 2
+emission_box_extents = Vector3( 5, 5, 1 )
+flag_disable_z = true
+spread = 20.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 3.0
+scale_curve = SubResource( 15 )
+
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
 __meta__ = {
@@ -159,6 +193,7 @@ anims/Setup = SubResource( 5 )
 anims/Up = SubResource( 6 )
 
 [node name="Effects" type="AnimationPlayer" parent="."]
+"anims/Level Up" = SubResource( 12 )
 anims/Take_Damage = SubResource( 7 )
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -175,7 +210,7 @@ vframes = 4
 hframes = 3
 region_rect = Rect2( 10, 10, 100, 100 )
 
-[node name="Particles2D" type="Particles2D" parent="Base"]
+[node name="Blood" type="Particles2D" parent="Base"]
 visible = false
 show_behind_parent = true
 amount = 30
@@ -185,6 +220,14 @@ process_material = SubResource( 11 )
 
 [node name="Weapon" type="Node2D" parent="Base"]
 scale = Vector2( 0.5, 0.5 )
+
+[node name="LevelUp" type="Particles2D" parent="Base"]
+show_behind_parent = true
+position = Vector2( 0, 10 )
+rotation = -1.5708
+amount = 100
+explosiveness = 0.2
+process_material = SubResource( 13 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 visible = false
@@ -207,3 +250,6 @@ position = Vector2( -4.41507, 16.1803 )
 
 [node name="Coins PickUp" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
+
+[node name="Level Up" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )

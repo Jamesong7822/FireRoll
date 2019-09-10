@@ -1,5 +1,10 @@
 extends "res://Character/Character.gd"
 
+## Stat Growth ##
+var HEALTHGROWTH = 20
+var SPEEDGROWTH = 10
+var STAMINAGROWTH = 20
+
 const ACC = 30
 const DACC = ACC * 1.5
 enum State {STATE_MOVE, STATE_IDLE, STATE_ATTACK, STATE_DAMAGED}
@@ -8,6 +13,7 @@ enum WEAPONS {WEAPON_BASIC_SWORD}
 
 var experience = 0
 var level = 0
+var skillPoints = 0
 var currentHealth
 var currentStamina
 var currentState
@@ -58,10 +64,9 @@ func _ready():
 	connect("WeaponMove", $Base/Weapon.get_child(0), "on_Move")
 	weaponNode = weapon
 	
-	#connect("Health_Changed", HUDSCENE, "_on_Player_Health_Changed")
-	#connect("Stamina_Changed", HUDSCENE, "_on_Player_Stamina_Changed") 
 	
-	$Base/Particles2D.hide()
+	$Base/Blood.hide()
+	$Base/LevelUp.hide()
 	
 	# Update HUD
 	var HUD = get_parent().get_parent().get_parent().get_node("PAGES/HUD")
@@ -208,9 +213,18 @@ func addEXP(EXP):
 	
 func hasLevelUp():
 	# Function calculates current level based on EXP
-	var currentlvl = int(0.03 * sqrt(experience))
+	var currentlvl = int(0.05 * sqrt(experience))
 	if currentlvl > level:
 		level = currentlvl
+		skillPoints += 1
+		$Effects.current_animation = "Level Up"
+		$"Level Up".play()
+		
+	
+	
+func calculateEXP():
+	# Function calculates how much EXP required for next level up
+	return pow((level + 1)/0.05, 2)
 	
 func generateSaveData():
 	print ("Generating Player Save Data")
@@ -221,6 +235,7 @@ func generateSaveData():
 		"level": level,
 		"experience": experience,
 		"currentWeapon": currentWeapon,
+		"skillPoints": skillPoints,
 		"gold": gold,
 		"Health": Health,
 		"Stamina": Stamina,
@@ -228,3 +243,14 @@ func generateSaveData():
 		}
 		
 	return saveDict
+	
+func skillUp(skill):
+	match skill:
+		"Health":
+			Health += HEALTHGROWTH
+			
+		"Stamina":
+			Stamina += STAMINAGROWTH
+			
+		"Speed":
+			Speed += SPEEDGROWTH
