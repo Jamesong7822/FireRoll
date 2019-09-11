@@ -8,7 +8,7 @@ func _physics_process(delta):
 	
 func update():
 	var mainScene = get_parent().get_parent()
-	var playerScene = mainScene.get_node("Outdoor Map/Bushes/Player")
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
 	# Get amount of skill points available
 	var skillPoints = playerScene.skillPoints
 	# Update the skill points
@@ -24,7 +24,7 @@ func update():
 func buttonPressHandler():
 	# Function calls the appropriate skillUp
 	var mainScene = get_parent().get_parent()
-	var playerScene = mainScene.get_node("Outdoor Map/Bushes/Player")
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
 	for button in get_tree().get_nodes_in_group("Upgrade"):
 		if button.is_pressed():
 			# Get button name

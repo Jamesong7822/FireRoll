@@ -14,7 +14,7 @@ func _ready():
 	$AnimationPlayer.play("Setup")
 	$"Attack Up Area/CollisionShape2D".disabled = true
 	$"Attack Down Area/CollisionShape2D".disabled = true
-	player = get_parent().get_parent().get_parent()
+	player = get_tree().get_nodes_in_group("Player")[0]
 	connect("Attack", player, "on_Attack")
 
 	pass

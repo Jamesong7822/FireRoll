@@ -19,7 +19,7 @@ var knockback
 var knockbackVector = Vector2()
 var beforeKnockBackPos = Vector2()
 
-onready var target = get_parent().get_node("Player")
+onready var target = get_tree().get_nodes_in_group("Player")[0]
 onready var GOLD = preload("res://Items/Consumables/Coins.tscn")
 var MAIN
 
@@ -30,6 +30,7 @@ signal GiveEXP(EXP)
 
 func _ready():
 	add_to_group("Enemies")
+	setStats()
 	$Base/HealthBar.max_value = Health
 	$Base/HealthBar.value = Health
 	$Base/HealthBar.hide()
@@ -39,6 +40,16 @@ func _ready():
 	connect("GiveEXP", target, "addEXP", [], CONNECT_ONESHOT)
 	
 	rng.randomize()
+	
+func setStats():
+	# Function takes a look at player current level and tweak enemy stats accordingly
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
+	var playerLevel = playerScene.level
+	Health = playerLevel * 5 + Health
+	Speed = playerLevel * 5 + Speed
+	Damage = playerLevel * 3 +  Damage
+	EXP = int (pow(playerLevel, 0.5)* 100)
+	
 	
 func _physics_process(delta):
 	checkDeath()
@@ -77,8 +88,9 @@ func checkDeath():
 		
 func dropLoot():
 	#print ("DROP LOOT")
+	var playerLvl = get_tree().get_nodes_in_group("Player")[0].level
 	var variance = rng.randi_range(-ValueRange, ValueRange)
-	var totalGold = BaseValue + variance
+	var totalGold = (BaseValue + variance)*playerLvl*0.8
 	emit_signal("DropLoot", totalGold, position)
 	emit_signal("GiveEXP", EXP)
 	

@@ -12,7 +12,7 @@ enum Facing {FACE_RIGHT, FACE_LEFT, FACE_UP, FACE_DOWN}
 enum WEAPONS {WEAPON_BASIC_SWORD}
 
 var experience = 0
-var level = 0
+var level = 1
 var skillPoints = 0
 var currentHealth
 var currentStamina
@@ -69,8 +69,15 @@ func _ready():
 	$Base/LevelUp.hide()
 	
 	# Update HUD
-	var HUD = get_parent().get_parent().get_parent().get_node("PAGES/HUD")
+	var HUD = get_parent().get_parent().get_parent().get_node("HUD")
+	connect("Health_Changed", HUD, "_on_Player_Health_Changed")
+	connect("Stamina_Changed", HUD, "_on_Player_Stamina_Changed")
+	connect("Gold_Changed", HUD, "_on_Player_Gold_Changed")
 	emit_signal("Gold_Changed", gold)
+	
+	
+	var MAIN = get_parent().get_parent().get_parent()
+	connect("Dead", MAIN, "_on_Player_Dead")
 	
 
 func _physics_process(delta):
@@ -82,6 +89,7 @@ func _physics_process(delta):
 	hasLevelUp()
 	currentStamina += 0.1
 	currentStamina = clamp(currentStamina, 0, Stamina)
+	emit_signal("Health_Changed", currentHealth)
 	emit_signal("Stamina_Changed", currentStamina)
 	emit_signal("Gold_Changed", gold)
 
@@ -197,7 +205,7 @@ func on_Hit(damage):
 	currentState = State.STATE_DAMAGED
 	if not $Effects.is_playing():
 		$Effects.current_animation = "Take_Damage"
-	emit_signal("Health_Changed", currentHealth)
+	
 	$Hurt.play()
 
 		
@@ -213,18 +221,20 @@ func addEXP(EXP):
 	
 func hasLevelUp():
 	# Function calculates current level based on EXP
-	var currentlvl = int(0.05 * sqrt(experience))
+	var currentlvl = int(0.1 * sqrt(experience))
 	if currentlvl > level:
 		level = currentlvl
 		skillPoints += 1
 		$Effects.current_animation = "Level Up"
+		currentHealth = Health
+		currentStamina = Stamina
 		$"Level Up".play()
 		
 	
 	
 func calculateEXP():
 	# Function calculates how much EXP required for next level up
-	return pow((level + 1)/0.05, 2)
+	return pow((level + 1)/0.1, 2)
 	
 func generateSaveData():
 	print ("Generating Player Save Data")
