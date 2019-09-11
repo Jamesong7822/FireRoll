@@ -160,6 +160,7 @@ radius = 20.0
 
 [node name="Slime" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+Name = "Slime"
 Health = 100
 Speed = 150
 Damage = 10

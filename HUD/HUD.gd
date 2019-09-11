@@ -45,6 +45,7 @@ func _on_Menu_Button_pressed():
 	# save Stuff
 	var mainScene = get_parent()
 	mainScene.saveData()
+	get_tree().paused = true
 	$Popup.popup()
 	$Popup/Timer.start()
 	

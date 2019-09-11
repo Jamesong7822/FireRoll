@@ -21,6 +21,7 @@ var currentWeapon
 var currentFacing
 var Stamina = 100
 var gold = 0
+var isDead = false
 
 onready var basicSword = preload("res://Items/Weapons/Melee/Basic Sword.tscn")
 export var HUDSCENE = preload("res://HUD/HUD.tscn")
@@ -201,7 +202,9 @@ func on_Attack():
 func on_Hit(damage):
 	currentHealth -= damage
 	if currentHealth <= 0:
+		isDead = true
 		emit_signal("Dead")
+		
 	currentState = State.STATE_DAMAGED
 	if not $Effects.is_playing():
 		$Effects.current_animation = "Take_Damage"
@@ -238,19 +241,42 @@ func calculateEXP():
 	
 func generateSaveData():
 	print ("Generating Player Save Data")
-	var saveDict = {
-		"filename": get_filename(),
-		"parent": get_parent().get_path(),
-		"Name": Name,
-		"level": level,
-		"experience": experience,
-		"currentWeapon": currentWeapon,
-		"skillPoints": skillPoints,
-		"gold": gold,
-		"Health": Health,
-		"Stamina": Stamina,
-		"Speed": Speed		
-		}
+	var saveDict = {}
+	if not isDead:
+		saveDict = {
+			"filename": get_filename(),
+			"parent": get_parent().get_path(),
+			"Name": Name,
+			"level": level,
+			"experience": experience,
+			"currentWeapon": currentWeapon,
+			"skillPoints": skillPoints,
+			"gold": gold,
+			"Health": Health,
+			"Stamina": Stamina,
+			"Speed": Speed,
+			"currentHealth": currentHealth,
+			"currentStamina": currentStamina,
+			"isDead": isDead,
+			"pos_x": position.x,
+			"pos_y": position.y
+			}
+	else:
+		saveDict = {
+			"filename": get_filename(),
+			"parent": get_parent().get_path(),
+			"Name": Name,
+			"level": level,
+			"experience": experience,
+			"currentWeapon": currentWeapon,
+			"skillPoints": skillPoints,
+			"gold": gold,
+			"Health": Health,
+			"Stamina": Stamina,
+			"Speed": Speed,
+			"pos_x": 0,
+			"pos_y": 0
+			}
 		
 	return saveDict
 	
@@ -264,3 +290,6 @@ func skillUp(skill):
 			
 		"Speed":
 			Speed += SPEEDGROWTH
+			
+func init():
+	pass

@@ -1,0 +1,3 @@
+{"Name":"Survival Map","Seed":1650967290,"filename":"res://Map/Survival Map.tscn","parent":"/root/Main"}
+{"Health":100,"Name":"Player","Speed":300,"Stamina":100,"currentHealth":100,"currentStamina":90.199997,"currentWeapon":0,"experience":0,"filename":"res://Character/Player/Player.tscn","gold":0,"isDead":false,"level":1,"parent":"/root/Main/Survival Map/Bushes","pos_x":0,"pos_y":5,"skillPoints":0}
+{"CriticalChance":10,"CriticalMultiplier":0.5,"Damage":20,"Knockback":30,"Level":1,"Name":"Basic Sword","filename":"res://Items/Weapons/Melee/Basic Sword.tscn","parent":"/root/Main/Survival Map/Bushes/Player/Base/Weapon"}

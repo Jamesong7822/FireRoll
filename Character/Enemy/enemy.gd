@@ -30,6 +30,7 @@ signal GiveEXP(EXP)
 
 func _ready():
 	add_to_group("Enemies")
+	#add_to_group("Saving")
 	setStats()
 	$Base/HealthBar.max_value = Health
 	$Base/HealthBar.value = Health
@@ -104,4 +105,24 @@ func hit(damage):
 	$Base/HealthBar.show()
 	$Base/HealthBar.value -= damage
 	
+	
+func generateSaveData():
+	print ("Generating Enemy Save Data")
+	var saveDict = {}
+	saveDict = {
+		"filename": get_filename(),
+		"parent": get_parent().get_path(),
+		"Name": Name,
+		"Health": Health,
+		"Speed": Speed,
+		"Damage": Damage,
+		"pos_x": position.x,
+		"pos_y": position.y
+		}
+		
+	return saveDict
+	
+	
+func init():
+	pass
 

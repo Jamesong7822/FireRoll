@@ -17,23 +17,26 @@ func update():
 	if skillPoints == 0:
 		for button in get_tree().get_nodes_in_group("Upgrade"):
 			button.disabled = true
-		
-	else:
-		buttonPressHandler()
-			
-func buttonPressHandler():
-	# Function calls the appropriate skillUp
-	var mainScene = get_parent().get_parent()
-	var playerScene = get_tree().get_nodes_in_group("Player")[0]
-	for button in get_tree().get_nodes_in_group("Upgrade"):
-		if button.is_pressed():
-			# Get button name
-			var skillName = button.name
-			playerScene.skillUp(skillName)
-			# Subtract player skill points
-			playerScene.skillPoints -= 1
 
 
 func _on_Back_Button_pressed():
 	get_tree().paused = false
 	queue_free()
+
+
+func _on_Health_pressed():
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
+	playerScene.skillUp("Health")
+	playerScene.skillPoints -=1
+
+
+func _on_Speed_pressed():
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
+	playerScene.skillUp("Speed")
+	playerScene.skillPoints -=1
+
+
+func _on_Stamina_pressed():
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
+	playerScene.skillUp("Stamina")
+	playerScene.skillPoints -=1

@@ -51,11 +51,11 @@ func loadResource(scenePath):
 func loadResourceComplete(resource):
 	assert (resource)
 	thread.wait_to_finish()
-
 	add_child(resource)
 	loadHUD()
 	loadPlayer()
 	loadData()
+	
 	startGame()
 	
 	
@@ -82,7 +82,8 @@ func saveData(filepath=""):
 	var saveNodes = get_tree().get_nodes_in_group("Saving")
 	for node in saveNodes:
 		var nodeSaveData = node.call("generateSaveData")
-		saveGame.store_line(to_json(nodeSaveData))
+		if nodeSaveData != null:
+			saveGame.store_line(to_json(nodeSaveData))
 		
 	saveGame.close()
 	
@@ -98,23 +99,35 @@ func loadData(filepath=""):
 	#	node.queue_free()	
 		
 	loadGame.open("res://savegame.save", File.READ)
+#	var nodesToDelete = get_tree().get_nodes_in_group("Saving")
+#	for i in nodesToDelete:
+#		i.queue_free()
 	while not loadGame.eof_reached():
 		var currentLine = parse_json(loadGame.get_line())
 		if currentLine == null:
 			continue
 		
+		
 		#var loadedNode = load(currentLine["filename"]).instance()
 		#get_node(currentLine["parent"]).add_child(loadedNode)
 		#print (currentLine)
-		# Set Player stats
+		
 		var saveNode = get_node(currentLine["parent"]).get_node(currentLine["Name"])
 		#print (saveNode)
+#		print ("Instancing: ", currentLine["filename"])
+#		var saveNode = load(currentLine["filename"]).instance()
+#		get_node(currentLine["parent"]).add_child(saveNode)
+		
 		for key in currentLine.keys():
-			if key == "filename" or key == "parent" or key == "Name":
+			if key == "filename" or key == "parent" or key == "Name" or key == "pos_x" or key == "pos_y":
 				continue
-				
+								
 			#print(currentLine["Name"], " Setting: ", key, " as ", currentLine[key]) 
 			saveNode.set(key, currentLine[key])
+			
+		if currentLine["Name"] == "Player":
+			var playerNode = get_node(currentLine["parent"]).get_node(currentLine["Name"])
+			playerNode.position = Vector2(currentLine["pos_x"], currentLine["pos_y"])
 			
 		if currentLine["Name"] == "Basic Sword":
 			var node = get_node(currentLine["parent"]).get_node(currentLine["Name"])
@@ -123,6 +136,9 @@ func loadData(filepath=""):
 			node.Knockback = int(currentLine["Knockback"])
 			node.CriticalChance = float(currentLine["CriticalChance"])
 			node.CriticalMultiplier = float(currentLine["CriticalMultiplier"])
+			
+		saveNode.init()
+			
 		
 #		player.Health = int(currentLine["health"])
 #		player.level = int(currentLine["level"])
