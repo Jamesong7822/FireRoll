@@ -4,11 +4,21 @@ var ShopHUD = preload("res://HUD/Shop HUD.tscn")
 var SkillsHUD = preload("res://HUD/SkillsHUD.tscn")
 var DeathHUD = preload("res://HUD/Death Page.tscn")
 
+var playerScene
+
 func _ready():
 	#var player = get_parent().get_parent().get_node("Outdoor Map/Bushes/Player")
 	#$"Center Bot/Player Stats/Gold/HBoxContainer/Label".text = str(player.gold)
 	# Show only main HUD
 	pass
+	
+	
+func _physics_process(delta):
+	var playerExists = get_tree().get_nodes_in_group("Player").size() == 1
+	if playerExists:
+		playerScene = get_tree().get_nodes_in_group("Player")[0]
+		$"Center Bot/Player Stats/Health Bar/Health Progress Bar".max_value = playerScene.Health
+		$"Center Bot/Player Stats/Stamina Bar/Stamina Progress Bar".max_value = playerScene.Stamina
 
 func _on_Player_Health_Changed(value):
 	$"Center Bot/Player Stats/Health Bar/Health Progress Bar".set_value(value)

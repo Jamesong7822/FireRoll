@@ -128,9 +128,7 @@ tracks/1/keys = {
 "values": [ false, true, false ]
 }
 
-[sub_resource type="CapsuleShape2D" id=9]
-radius = 14.8206
-height = 31.0274
+[sub_resource type="CircleShape2D" id=16]
 
 [sub_resource type="Curve" id=10]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.98416, 0.367083 ), 0.0, 0.0, 0, 0 ]
@@ -182,6 +180,7 @@ Health = 100
 Speed = 300
 
 [node name="HitBox" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0, 20 )
 shape = SubResource( 1 )
 
@@ -197,10 +196,10 @@ anims/Up = SubResource( 6 )
 anims/Take_Damage = SubResource( 8 )
 
 [node name="Area2D" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 9 )
+position = Vector2( 0, 20 )
+shape = SubResource( 16 )
 
 [node name="Base" type="Sprite" parent="."]
 show_behind_parent = true

@@ -88,7 +88,8 @@ func _physics_process(delta):
 	movementHandler(delta)
 	animationHandler()
 	hasLevelUp()
-	currentStamina += 0.1
+	var staminaRate = Stamina * 0.001
+	currentStamina += staminaRate
 	currentStamina = clamp(currentStamina, 0, Stamina)
 	emit_signal("Health_Changed", currentHealth)
 	emit_signal("Stamina_Changed", currentStamina)
@@ -284,6 +285,7 @@ func skillUp(skill):
 	match skill:
 		"Health":
 			Health += HEALTHGROWTH
+			
 			
 		"Stamina":
 			Stamina += STAMINAGROWTH

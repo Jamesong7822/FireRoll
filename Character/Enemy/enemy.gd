@@ -10,6 +10,9 @@ export var DetectionRadius: int
 export var DropRate: int
 export var BaseValue: int
 export var ValueRange: int
+
+var Level: int
+
 var EXP
 
 enum State {STATE_PATROL, STATE_CHASE, STATE_ATTACK, STATE_KNOCKBACK, STATE_DROPLOOT, STATE_DEAD}
@@ -31,25 +34,29 @@ signal GiveEXP(EXP)
 func _ready():
 	add_to_group("Enemies")
 	#add_to_group("Saving")
-	setStats()
 	$Base/HealthBar.max_value = Health
 	$Base/HealthBar.value = Health
 	$Base/HealthBar.hide()
 	MAIN = $".".get_parent().get_parent().get_parent()
-	
+
 	connect("DropLoot", MAIN, "dropLoot", [], CONNECT_ONESHOT)
 	connect("GiveEXP", target, "addEXP", [], CONNECT_ONESHOT)
 	
 	rng.randomize()
 	
-func setStats():
-	# Function takes a look at player current level and tweak enemy stats accordingly
-	var playerScene = get_tree().get_nodes_in_group("Player")[0]
-	var playerLevel = playerScene.level
-	Health = playerLevel * 5 + Health
-	Speed = playerLevel * 5 + Speed
-	Damage = playerLevel * 3 +  Damage
-	EXP = int (pow(playerLevel, 0.5)* 100)
+func setStats(hpGrowth, speedGrowth, maxSpeed, dmgGrowth):
+	# Function sets the stats of the enemy based on the enemy level
+	
+	Health += Level * hpGrowth
+	
+	Speed += Level * speedGrowth
+	#print ("Caculated Speed: ", Speed, " Max Speed: ", maxSpeed)
+	Speed = clamp(Speed, 0, maxSpeed)
+	
+	Damage += Level * dmgGrowth
+	
+	EXP = int (0.7 * Health + 0.3 * Speed + 2 * Damage)
+	BaseValue += Level
 	
 	
 func _physics_process(delta):
@@ -89,9 +96,8 @@ func checkDeath():
 		
 func dropLoot():
 	#print ("DROP LOOT")
-	var playerLvl = get_tree().get_nodes_in_group("Player")[0].level
 	var variance = rng.randi_range(-ValueRange, ValueRange)
-	var totalGold = (BaseValue + variance)*playerLvl*0.8
+	var totalGold = (BaseValue + variance)
 	emit_signal("DropLoot", totalGold, position)
 	emit_signal("GiveEXP", EXP)
 	
@@ -123,6 +129,5 @@ func generateSaveData():
 	return saveDict
 	
 	
-func init():
-	pass
+
 

@@ -207,9 +207,6 @@ visible = false
 [node name="Attack Range" parent="." index="6"]
 visible = false
 
-[node name="Attack Area" parent="." index="7"]
-visible = false
-
 [node name="CollisionShape2D" parent="Attack Area" index="0"]
 position = Vector2( -60, 0 )
 shape = SubResource( 8 )

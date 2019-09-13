@@ -7,7 +7,9 @@ var rng = RandomNumberGenerator.new()
 
 signal SpawnEnemy
 
-var slimeScene = preload("res://Character/Enemy/Minions/Slime.tscn")
+#var slimeScene = preload("res://Character/Enemy/Minions/Slime.tscn")
+#var slimeScene = preload("res://Character/Enemy/Minions/Cobra.tscn")
+var slimeScene = preload("res://Character/Enemy/Minions/Fire Spirit.tscn")
 var GOLD = preload("res://Items/Consumables/Coins.tscn")
 var PLAYER = preload("res://Character/Player/Player.tscn")
 
@@ -152,7 +154,7 @@ func startGame():
 	# Reset game values here
 	# Enemy Spawn Timer
 	$EnemySpawnTimer.set_wait_time(spawnTimer)
-	$EnemySpawnTimer.start()
+	#$EnemySpawnTimer.start()
 	get_tree().paused = false
 	
 

@@ -30,7 +30,6 @@ margin_bottom = 64.0
 custom_constants/separation = 50
 
 [node name="Health Bar" parent="Center Bot/Player Stats" instance=ExtResource( 2 )]
-editor/display_folded = true
 
 [node name="Stamina Bar" parent="Center Bot/Player Stats" instance=ExtResource( 3 )]
 margin_left = 204.0
@@ -129,5 +128,9 @@ valign = 1
 [connection signal="pressed" from="Center Bot/Player Stats/ShopButton" to="." method="_on_ShopButton_pressed"]
 [connection signal="pressed" from="Top Left/Menu Button" to="." method="_on_Menu_Button_pressed"]
 [connection signal="timeout" from="Popup/Timer" to="." method="_on_Timer_timeout"]
+
+[editable path="Center Bot/Player Stats/Health Bar"]
+
+[editable path="Center Bot/Player Stats/Stamina Bar"]
 
 [editable path="Center Bot/Player Stats/Gold"]

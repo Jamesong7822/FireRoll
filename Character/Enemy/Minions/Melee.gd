@@ -11,7 +11,7 @@ func _ready():
 	dirVec.x = rng.randf_range(-100.0, 100.0)
 	dirVec.y = rng.randf_range(-100.0, 100.0)
 	dirVec = dirVec.normalized()
-	currentState = State.STATE_PATROL
+	currentState = State.STATE_CHASE
 	$"Attack Area/CollisionShape2D".disabled = true
 	
 	connect("HitPlayer", target, "on_Hit")
@@ -82,7 +82,8 @@ func _on_Attack_Range_body_entered(body):
 
 
 func _on_Attack_Area_body_entered(body):
-	emit_signal("HitPlayer", Damage)
+	if body.name == "Player":
+		emit_signal("HitPlayer", Damage)
 
 
 func _on_Attack_Range_body_exited(body):
