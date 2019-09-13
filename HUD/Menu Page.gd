@@ -5,6 +5,8 @@ extends CanvasLayer
 func _ready():
 	#Animate the background
 	$AnimationPlayer.play("Moving Clouds")
+	$BG.play()
+	$Smoke.emitting = true
 	pass
 
 

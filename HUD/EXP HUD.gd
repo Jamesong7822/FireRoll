@@ -1,5 +1,8 @@
 extends TextureProgress
 
+var EXPMIN
+var EXPMAX
+
 func _ready():
 	pass
 	
@@ -8,7 +11,11 @@ func _physics_process(delta):
 	if playerExists:
 		var playerScene = get_tree().get_nodes_in_group("Player")[0]
 		
-		var EXPMAX = playerScene.calculateEXP()
+		var intermediate = playerScene.calculateEXP()
+		EXPMIN = intermediate[0]
+		EXPMAX = intermediate[1]
+		
+		min_value = EXPMIN
 		max_value = EXPMAX
 		value = playerScene.experience
 		

@@ -238,7 +238,9 @@ func hasLevelUp():
 	
 func calculateEXP():
 	# Function calculates how much EXP required for next level up
-	return pow((level + 1)/0.1, 2)
+	if level == 1:
+		return [0, pow((level + 1)/0.1, 2)]
+	return [pow((level)/0.1, 2), pow((level + 1)/0.1, 2)]
 	
 func generateSaveData():
 	print ("Generating Player Save Data")

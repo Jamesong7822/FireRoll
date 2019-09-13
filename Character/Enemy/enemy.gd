@@ -55,7 +55,7 @@ func setStats(hpGrowth, speedGrowth, maxSpeed, dmgGrowth):
 	
 	Damage += Level * dmgGrowth
 	
-	EXP = int (0.7 * Health + 0.3 * Speed + 2 * Damage)
+	EXP = int (0.3 * Health + 0.3 * Speed + 2 * Damage)
 	BaseValue += Level
 	
 	

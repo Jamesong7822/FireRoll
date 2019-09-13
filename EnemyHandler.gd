@@ -49,6 +49,16 @@ func _physics_process(delta):
 	# Update progress Bar
 	$"CanvasLayer/HBoxContainer/TextureProgress".max_value = numStages
 	$"CanvasLayer/HBoxContainer/TextureProgress".value = stageNum + 1
+	
+#	var numEnemies = get_tree().get_nodes_in_group("Enemies").size()
+#	if numEnemies == 0:
+#		# Hide the Stage stuff
+#		$"CanvasLayer/HBoxContainer".visible = false
+#		# Reset Stage Counter 
+#		$"Stage Timer".stop()
+#		# Start Wave Timer
+#		$"Wave Timer".start()
+		
 
 	
 
@@ -86,7 +96,7 @@ func calculateWaveSpawns():
 	var spawnHolder = []
 	
 	# Calculate number of stages 
-	numStages = waveNum % 5 + 1
+	numStages = int(waveNum / 5) + 1
 	# Calculate total number of mobs (per stage)
 	var totalMobs = numStages * 5
 	# Calculate spawn rate for each mob
@@ -168,6 +178,7 @@ func _on_Stage_Timer_timeout():
 	var numEnemies = get_tree().get_nodes_in_group("Enemies").size()
 	#print (numEnemies)
 	if stageNum >= numStages and numEnemies == 0:
+		$"CanvasLayer/HBoxContainer".visible = false
 		# Reset stageNum and start wave timer
 		stageNum = 0 
 		$"Wave Timer".start()

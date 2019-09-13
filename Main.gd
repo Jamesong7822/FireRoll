@@ -21,6 +21,9 @@ func _ready():
 	#startGame()
 	# Only show Menu Page
 	#loadMenuPage()
+	$"BG Music".play()
+	
+
 	
 func loadMenuPage():
 	var menuScene = load("res://HUD/Menu Page.tscn")
