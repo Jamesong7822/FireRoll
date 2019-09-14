@@ -6,7 +6,7 @@
 [ext_resource path="res://HUD/Assets/Health_Bar_Under.png" type="Texture" id=4]
 [ext_resource path="res://HUD/Assets/Health_Bar_Progress.png" type="Texture" id=5]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=1]
 resource_name = "Attack"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Base:frame")
@@ -45,7 +45,7 @@ tracks/2/keys = {
 "values": [ false, true, false ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=2]
 resource_name = "Death"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Base:frame")
@@ -59,9 +59,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 32, 33, 34, 35, 36, 37, 38, 39 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Death:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
-[sub_resource type="Animation" id=2]
-resource_name = "Move_Left"
+[sub_resource type="Animation" id=3]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("Base:flip_h")
@@ -88,8 +99,7 @@ tracks/1/keys = {
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7 ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "Move_Right"
+[sub_resource type="Animation" id=4]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("Base:flip_h")
@@ -116,8 +126,7 @@ tracks/1/keys = {
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7 ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "Take_Damage"
+[sub_resource type="Animation" id=5]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("Base:frame")
@@ -150,6 +159,7 @@ emission_sphere_radius = 25.0
 flag_disable_z = true
 spread = 20.0
 gravity = Vector3( 0, 0, 0 )
+angular_velocity = 6.69693e-007
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 90.0
@@ -168,11 +178,11 @@ ValueRange = 1
 AttackRange = null
 
 [node name="AnimationPlayer" parent="." index="0"]
-anims/Attack = SubResource( 3 )
-anims/Death = SubResource( 5 )
-anims/Move_Left = SubResource( 2 )
-anims/Move_Right = SubResource( 1 )
-anims/Take_Damage = SubResource( 4 )
+anims/Attack = SubResource( 1 )
+anims/Death = SubResource( 2 )
+anims/Move_Left = SubResource( 3 )
+anims/Move_Right = SubResource( 4 )
+anims/Take_Damage = SubResource( 5 )
 
 [node name="BodyShape" parent="." index="1"]
 visible = false
@@ -184,7 +194,7 @@ offset = Vector2( 0, -10 )
 flip_h = true
 vframes = 5
 hframes = 8
-frame = 16
+frame = 32
 
 [node name="HealthBar" parent="Base" index="0"]
 margin_left = -25.9571

@@ -80,7 +80,6 @@ func _physics_process(delta):
 			$AnimationPlayer.current_animation = "Death"
 			yield($AnimationPlayer, "animation_finished")
 			
-			
 			queue_free()
 			
 		State.STATE_DROPLOOT:

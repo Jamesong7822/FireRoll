@@ -30,6 +30,7 @@ func _on_Upgrade_Button_pressed():
 		currentWeapon.upgrade()
 		playerScene.gold -= upgradeCost
 		HUDScene.text = str(playerScene.gold)
+		$"Upgrade SFX".play()
 
 	
 func updateShopInfo():

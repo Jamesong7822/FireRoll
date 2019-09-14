@@ -54,7 +54,7 @@ func on_Move():
 ### TO DO make the below functions an inherited function from weapon.gd!!!
 func calculateUpgradeCost():
 	# Takes current level of weapon and calculates upgrade cost!
-	var upgradeCost = int(Level * exp(1.2) * 25)
+	var upgradeCost = int(Level * exp(1.2) * 15)
 	#print ("Upgrade Cost: ", upgradeCost)
 	return upgradeCost
 	

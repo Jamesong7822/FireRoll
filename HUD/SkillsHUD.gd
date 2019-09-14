@@ -27,16 +27,19 @@ func _on_Back_Button_pressed():
 func _on_Health_pressed():
 	var playerScene = get_tree().get_nodes_in_group("Player")[0]
 	playerScene.skillUp("Health")
+	$Upgrade.play()
 	playerScene.skillPoints -=1
 
 
 func _on_Speed_pressed():
 	var playerScene = get_tree().get_nodes_in_group("Player")[0]
 	playerScene.skillUp("Speed")
+	$Upgrade.play()
 	playerScene.skillPoints -=1
 
 
 func _on_Stamina_pressed():
 	var playerScene = get_tree().get_nodes_in_group("Player")[0]
 	playerScene.skillUp("Stamina")
+	$Upgrade.play()
 	playerScene.skillPoints -=1

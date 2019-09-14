@@ -87,4 +87,5 @@ func _on_Attack_Area_body_entered(body):
 
 
 func _on_Attack_Range_body_exited(body):
-	currentState = State.STATE_CHASE
+	if currentState != State.STATE_DEAD or currentState != State.STATE_DROPLOOT:
+		currentState = State.STATE_CHASE

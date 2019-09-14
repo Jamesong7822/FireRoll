@@ -1,4 +1,4 @@
-extends TextureProgress
+extends HBoxContainer
 
 var EXPMIN
 var EXPMAX
@@ -15,7 +15,7 @@ func _physics_process(delta):
 		EXPMIN = intermediate[0]
 		EXPMAX = intermediate[1]
 		
-		min_value = EXPMIN
-		max_value = EXPMAX
-		value = playerScene.experience
+		$"EXP BAR".min_value = EXPMIN
+		$"EXP BAR".max_value = EXPMAX
+		$"EXP BAR".value = playerScene.experience
 		

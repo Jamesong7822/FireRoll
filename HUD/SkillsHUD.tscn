@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://HUD/SkillsHUD.gd" type="Script" id=1]
 [ext_resource path="res://HUD/Assets/PopUp.png" type="Texture" id=2]
 [ext_resource path="res://HUD/Assets/Heart_Icon.png" type="Texture" id=3]
 [ext_resource path="res://HUD/Assets/Move Speed Icon.png" type="Texture" id=4]
 [ext_resource path="res://HUD/Assets/Stamina_Icon.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Audio/LevelUp.wav" type="AudioStream" id=6]
 
 [node name="Skills HUD" type="CanvasLayer"]
 pause_mode = 2
@@ -115,6 +116,9 @@ margin_top = 210.0
 margin_right = 487.0
 margin_bottom = 230.0
 text = "Back"
+
+[node name="Upgrade" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
 [connection signal="pressed" from="MarginContainer/MarginContainer/VBoxContainer/Tier 1 Skills/Health" to="." method="_on_Health_pressed"]
 [connection signal="pressed" from="MarginContainer/MarginContainer/VBoxContainer/Tier 1 Skills/Speed" to="." method="_on_Speed_pressed"]
 [connection signal="pressed" from="MarginContainer/MarginContainer/VBoxContainer/Tier 1 Skills/Stamina" to="." method="_on_Stamina_pressed"]

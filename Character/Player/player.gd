@@ -136,6 +136,11 @@ func _physics_process(delta):
 	if Input.is_mouse_button_pressed(1) and currentStamina > weaponNode.Weight:
 		currentState = State.STATE_ATTACK
 		
+	if Input.is_mouse_button_pressed(1) and currentStamina < weaponNode.Weight:
+		# Play Not enough energy sound
+		if not $NoEnergy.is_playing():
+			$NoEnergy.play()
+		
 func movementHandler(delta):
 	moveVec = Vector2(0, 0)
 	if Input.is_action_pressed("ui_up"):
@@ -207,8 +212,7 @@ func on_Hit(damage):
 		emit_signal("Dead")
 		
 	currentState = State.STATE_DAMAGED
-	if not $Effects.is_playing():
-		$Effects.current_animation = "Take_Damage"
+	$Effects.current_animation = "Take_Damage"
 	
 	$Hurt.play()
 

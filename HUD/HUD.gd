@@ -19,6 +19,7 @@ func _physics_process(delta):
 		playerScene = get_tree().get_nodes_in_group("Player")[0]
 		$"Center Bot/Player Stats/Health Bar/Health Progress Bar".max_value = playerScene.Health
 		$"Center Bot/Player Stats/Stamina Bar/Stamina Progress Bar".max_value = playerScene.Stamina
+		$"Top Right/EXP HUD/Level".text = "Level: " + str(playerScene.level)
 
 func _on_Player_Health_Changed(value):
 	$"Center Bot/Player Stats/Health Bar/Health Progress Bar".set_value(value)
@@ -41,6 +42,7 @@ func _on_ShopButton_pressed():
 	var a = ShopHUD.instance()
 	add_child(a)
 	get_tree().paused = true
+	$"Center Bot/Player Stats/ShopButton/AudioStreamPlayer".play()
 	
 
 
@@ -48,6 +50,7 @@ func _on_Skill_Up_Button_pressed():
 	var a = SkillsHUD.instance()
 	add_child(a)
 	get_tree().paused = true
+	$"Center Bot/Player Stats/Skill Up Button/AudioStreamPlayer".play()
 	
 
 

@@ -43,12 +43,14 @@ func _ready():
 	init()
 	
 func _physics_process(delta):
+	# Update Wave Number
+	$"CanvasLayer/HBoxContainer/Wave Num".text = "Wave: " + str(waveNum)
 	# Update Stage number
-	$"CanvasLayer/HBoxContainer/Stage Num".text = "Stage: " + str(stageNum + 1)
+	$"CanvasLayer/HBoxContainer/Stage Num".text = "Stage: " + str(stageNum+1)
 	
 	# Update progress Bar
 	$"CanvasLayer/HBoxContainer/TextureProgress".max_value = numStages
-	$"CanvasLayer/HBoxContainer/TextureProgress".value = stageNum + 1
+	$"CanvasLayer/HBoxContainer/TextureProgress".value = stageNum+1
 	
 #	var numEnemies = get_tree().get_nodes_in_group("Enemies").size()
 #	if numEnemies == 0:
@@ -155,31 +157,38 @@ func _on_Wave_Timer_timeout():
 	spawnHandler()
 	$"Stage Timer".start()
 	$"Show Wave Count Timer".start()
+	# Play war horn sound
+	$WaveStart.play()
 
 
 func _on_Show_Wave_Count_Timer_timeout():
 	# Hide Wave Counter
 	$"CanvasLayer/VBoxContainer".visible = false
-	# Increment wave Num by 1
-	waveNum += 1
-	# Update wave counter text
-	init()
+	
+	
 	$"CanvasLayer/HBoxContainer".visible = true
 
 
 func _on_Stage_Timer_timeout():
 	$"Stage Timer".start()
 	stageNum += 1
+	#stageNum = clamp(stageNum, 0, numStages)
+	#print (numStages)
 	
 	if stageNum < numStages:
 		spawnHandler()
 	else:
-		stageNum = numStages
+		stageNum = numStages - 1
 	var numEnemies = get_tree().get_nodes_in_group("Enemies").size()
 	#print (numEnemies)
-	if stageNum >= numStages and numEnemies == 0:
+	if stageNum >= numStages - 1:
 		$"CanvasLayer/HBoxContainer".visible = false
 		# Reset stageNum and start wave timer
 		stageNum = 0 
 		$"Wave Timer".start()
+		# Increment wave Num by 1
+		waveNum += 1
+		# Update wave counter text
+		init()
+		
 	

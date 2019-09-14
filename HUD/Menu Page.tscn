@@ -5,8 +5,8 @@
 [ext_resource path="res://Assets/Moving Clouds.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Button_Default.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Button_Hover.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Audio/Bamboo Forest.wav" type="AudioStream" id=6]
-[ext_resource path="res://HUD/Assets/Smoke.png" type="Texture" id=7]
+[ext_resource path="res://HUD/Assets/Smoke.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Audio/Bamboo Forest.wav" type="AudioStream" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Moving Clouds"
@@ -41,7 +41,7 @@ curve = SubResource( 4 )
 [sub_resource type="ParticlesMaterial" id=6]
 flag_disable_z = true
 spread = 0.0
-gravity = Vector3( 0, -100, 0 )
+gravity = Vector3( -50, -100, 0 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 tangential_accel = 20.0
@@ -80,7 +80,7 @@ custom_constants/margin_left = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_left = 20.0
 margin_right = 276.0
-margin_bottom = 138.0
+margin_bottom = 286.0
 custom_constants/separation = 10
 
 [node name="Play Button" type="TextureButton" parent="MarginContainer/VBoxContainer"]
@@ -100,10 +100,46 @@ text = "PLAY"
 align = 1
 valign = 1
 
-[node name="Quit Button" type="TextureButton" parent="MarginContainer/VBoxContainer"]
+[node name="Instructions" type="TextureButton" parent="MarginContainer/VBoxContainer"]
+pause_mode = 2
 margin_top = 74.0
 margin_right = 256.0
 margin_bottom = 138.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 4 )
+texture_hover = ExtResource( 5 )
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Instructions"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -1.0
+margin_bottom = -1.0
+text = "INSTRUCTIONS"
+align = 1
+valign = 1
+
+[node name="Credits" type="TextureButton" parent="MarginContainer/VBoxContainer"]
+pause_mode = 2
+margin_top = 148.0
+margin_right = 256.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 4 )
+texture_hover = ExtResource( 5 )
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Credits"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -1.0
+margin_bottom = -1.0
+text = "CREDITS"
+align = 1
+valign = 1
+
+[node name="Quit Button" type="TextureButton" parent="MarginContainer/VBoxContainer"]
+margin_top = 222.0
+margin_right = 256.0
+margin_bottom = 286.0
 texture_normal = ExtResource( 4 )
 texture_hover = ExtResource( 5 )
 
@@ -114,17 +150,22 @@ text = "QUIT GAME"
 align = 1
 valign = 1
 
-[node name="BG" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
-
-[node name="Smoke" type="Particles2D" parent="."]
-position = Vector2( 939.82, 431.783 )
+[node name="Smoke" type="Particles2D" parent="MarginContainer"]
+position = Vector2( 939.82, 200.783 )
 scale = Vector2( 0.1, 0.1 )
 emitting = false
 amount = 50
-lifetime = 6.0
-randomness = 1.0
+lifetime = 5.0
+preprocess = 10.0
+explosiveness = 0.1
+randomness = 0.5
 process_material = SubResource( 6 )
-texture = ExtResource( 7 )
+texture = ExtResource( 6 )
+
+[node name="BG" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = -15.0
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Play Button" to="." method="_on_Play_Button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Instructions" to="." method="_on_Instructions_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Credits" to="." method="_on_Credits_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Quit Button" to="." method="_on_Quit_Button_pressed"]

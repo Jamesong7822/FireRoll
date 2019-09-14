@@ -59,7 +59,7 @@ margin_right = 701.0
 [node name="Top Right" type="MarginContainer" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -145.0
+margin_left = -191.0
 margin_bottom = 75.0
 size_flags_horizontal = 5
 size_flags_vertical = 5
@@ -67,14 +67,16 @@ custom_constants/margin_right = 40
 custom_constants/margin_top = 40
 
 [node name="EXP HUD" parent="Top Right" instance=ExtResource( 7 )]
-anchor_left = 0.0
-anchor_right = 0.0
-margin_left = 0.0
 margin_top = 40.0
-margin_right = 105.0
+margin_right = 151.0
 margin_bottom = 75.0
-size_flags_horizontal = 5
-size_flags_vertical = 5
+
+[node name="Level" parent="Top Right/EXP HUD" index="0"]
+margin_top = 10.0
+margin_bottom = 24.0
+
+[node name="EXP BAR" parent="Top Right/EXP HUD" index="1"]
+margin_bottom = 35.0
 
 [node name="Top Left" type="MarginContainer" parent="."]
 margin_right = 40.0
@@ -134,3 +136,5 @@ valign = 1
 [editable path="Center Bot/Player Stats/Stamina Bar"]
 
 [editable path="Center Bot/Player Stats/Gold"]
+
+[editable path="Top Right/EXP HUD"]
