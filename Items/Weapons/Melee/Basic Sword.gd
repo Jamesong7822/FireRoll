@@ -14,7 +14,7 @@ func _ready():
 	$AnimationPlayer.play("Setup")
 	$"Attack Up Area/CollisionShape2D".disabled = true
 	$"Attack Down Area/CollisionShape2D".disabled = true
-	player = get_parent().get_parent().get_parent()
+	player = get_tree().get_nodes_in_group("Player")[0]
 	connect("Attack", player, "on_Attack")
 
 	pass
@@ -54,7 +54,7 @@ func on_Move():
 ### TO DO make the below functions an inherited function from weapon.gd!!!
 func calculateUpgradeCost():
 	# Takes current level of weapon and calculates upgrade cost!
-	var upgradeCost = int(Level * exp(1.2) * 25)
+	var upgradeCost = int(Level * exp(1.2) * 15)
 	#print ("Upgrade Cost: ", upgradeCost)
 	return upgradeCost
 	

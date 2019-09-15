@@ -1,7 +1,14 @@
 extends "res://Character/Enemy/Minions/Melee.gd"
 
+var HEALTHGROWTHRATE = 30
+var SPEEDGROWTHRATE = 5
+var MAXSPEED = 250
+var DAMAGEGROWTHRATE = 2
+
+
 func _ready():
-	EXP = Health
+	pass
+
 
 func _physics_process(delta):
 #	match currentState:
@@ -13,3 +20,6 @@ func _physics_process(delta):
 #			print ("Attack")
 	pass
 
+func init():
+	setStats(HEALTHGROWTHRATE, SPEEDGROWTHRATE, MAXSPEED, DAMAGEGROWTHRATE)
+	#print ("Level:", Level, "Health: ", Health, "Speed: ", Speed, "Damage: ", Damage)

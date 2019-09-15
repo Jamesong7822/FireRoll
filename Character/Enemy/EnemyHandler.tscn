@@ -1,0 +1,88 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://EnemyHandler.gd" type="Script" id=1]
+[ext_resource path="res://HUD/Assets/Health_Bar_Under.png" type="Texture" id=2]
+[ext_resource path="res://HUD/Assets/Health_Bar_Progress.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Audio/Wave Start.wav" type="AudioStream" id=4]
+
+[node name="EnemyHandler" type="Node2D"]
+script = ExtResource( 1 )
+WaveCountDown = 3
+StageCountDown = 20
+WaveCountPopUpTime = 3
+MobLevelUpRate = 5
+
+[node name="Wave Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Show Wave Count Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Stage Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -54.0
+margin_top = -20.0
+margin_right = 54.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer"]
+margin_right = 108.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 1, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.541176, 0.541176, 0.541176, 1 )
+text = "Prepare yourself!"
+align = 1
+valign = 1
+
+[node name="Wave Counter" type="Label" parent="CanvasLayer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 108.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Wave"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -99.0
+margin_top = 40.0
+margin_right = 99.0
+margin_bottom = 35.0
+
+[node name="Wave Num" type="Label" parent="CanvasLayer/HBoxContainer"]
+margin_top = 10.0
+margin_right = 43.0
+margin_bottom = 24.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Wave: "
+
+[node name="Stage Num" type="Label" parent="CanvasLayer/HBoxContainer"]
+margin_left = 47.0
+margin_top = 10.0
+margin_right = 89.0
+margin_bottom = 24.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Stage: "
+
+[node name="TextureProgress" type="TextureProgress" parent="CanvasLayer/HBoxContainer"]
+margin_left = 93.0
+margin_right = 198.0
+margin_bottom = 35.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 3 )
+
+[node name="WaveStart" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+[connection signal="timeout" from="Wave Timer" to="." method="_on_Wave_Timer_timeout"]
+[connection signal="timeout" from="Show Wave Count Timer" to="." method="_on_Show_Wave_Count_Timer_timeout"]
+[connection signal="timeout" from="Stage Timer" to="." method="_on_Stage_Timer_timeout"]

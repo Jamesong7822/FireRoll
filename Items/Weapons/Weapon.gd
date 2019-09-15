@@ -12,3 +12,6 @@ export var CriticalMultiplier: float
 func _ready():
 	add_to_group("Saving")
 	pass
+
+func init():
+	pass

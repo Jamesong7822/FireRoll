@@ -12,7 +12,7 @@ enum Facing {FACE_RIGHT, FACE_LEFT, FACE_UP, FACE_DOWN}
 enum WEAPONS {WEAPON_BASIC_SWORD}
 
 var experience = 0
-var level = 0
+var level = 1
 var skillPoints = 0
 var currentHealth
 var currentStamina
@@ -21,6 +21,7 @@ var currentWeapon
 var currentFacing
 var Stamina = 100
 var gold = 0
+var isDead = false
 
 onready var basicSword = preload("res://Items/Weapons/Melee/Basic Sword.tscn")
 export var HUDSCENE = preload("res://HUD/HUD.tscn")
@@ -69,8 +70,15 @@ func _ready():
 	$Base/LevelUp.hide()
 	
 	# Update HUD
-	var HUD = get_parent().get_parent().get_parent().get_node("PAGES/HUD")
+	var HUD = get_parent().get_parent().get_parent().get_node("HUD")
+	connect("Health_Changed", HUD, "_on_Player_Health_Changed")
+	connect("Stamina_Changed", HUD, "_on_Player_Stamina_Changed")
+	connect("Gold_Changed", HUD, "_on_Player_Gold_Changed")
 	emit_signal("Gold_Changed", gold)
+	
+	
+	var MAIN = get_parent().get_parent().get_parent()
+	connect("Dead", MAIN, "_on_Player_Dead")
 	
 
 func _physics_process(delta):
@@ -80,8 +88,10 @@ func _physics_process(delta):
 	movementHandler(delta)
 	animationHandler()
 	hasLevelUp()
-	currentStamina += 0.1
+	var staminaRate = Stamina * 0.001
+	currentStamina += staminaRate
 	currentStamina = clamp(currentStamina, 0, Stamina)
+	emit_signal("Health_Changed", currentHealth)
 	emit_signal("Stamina_Changed", currentStamina)
 	emit_signal("Gold_Changed", gold)
 
@@ -125,6 +135,11 @@ func _physics_process(delta):
 	
 	if Input.is_mouse_button_pressed(1) and currentStamina > weaponNode.Weight:
 		currentState = State.STATE_ATTACK
+		
+	if Input.is_mouse_button_pressed(1) and currentStamina < weaponNode.Weight:
+		# Play Not enough energy sound
+		if not $NoEnergy.is_playing():
+			$NoEnergy.play()
 		
 func movementHandler(delta):
 	moveVec = Vector2(0, 0)
@@ -193,11 +208,12 @@ func on_Attack():
 func on_Hit(damage):
 	currentHealth -= damage
 	if currentHealth <= 0:
+		isDead = true
 		emit_signal("Dead")
+		
 	currentState = State.STATE_DAMAGED
-	if not $Effects.is_playing():
-		$Effects.current_animation = "Take_Damage"
-	emit_signal("Health_Changed", currentHealth)
+	$Effects.current_animation = "Take_Damage"
+	
 	$Hurt.play()
 
 		
@@ -213,34 +229,61 @@ func addEXP(EXP):
 	
 func hasLevelUp():
 	# Function calculates current level based on EXP
-	var currentlvl = int(0.05 * sqrt(experience))
+	var currentlvl = int(0.1 * sqrt(experience))
 	if currentlvl > level:
 		level = currentlvl
 		skillPoints += 1
 		$Effects.current_animation = "Level Up"
+		currentHealth = Health
+		currentStamina = Stamina
 		$"Level Up".play()
 		
 	
 	
 func calculateEXP():
 	# Function calculates how much EXP required for next level up
-	return pow((level + 1)/0.05, 2)
+	if level == 1:
+		return [0, pow((level + 1)/0.1, 2)]
+	return [pow((level)/0.1, 2), pow((level + 1)/0.1, 2)]
 	
 func generateSaveData():
 	print ("Generating Player Save Data")
-	var saveDict = {
-		"filename": get_filename(),
-		"parent": get_parent().get_path(),
-		"Name": Name,
-		"level": level,
-		"experience": experience,
-		"currentWeapon": currentWeapon,
-		"skillPoints": skillPoints,
-		"gold": gold,
-		"Health": Health,
-		"Stamina": Stamina,
-		"Speed": Speed		
-		}
+	var saveDict = {}
+	if not isDead:
+		saveDict = {
+			"filename": get_filename(),
+			"parent": get_parent().get_path(),
+			"Name": Name,
+			"level": level,
+			"experience": experience,
+			"currentWeapon": currentWeapon,
+			"skillPoints": skillPoints,
+			"gold": gold,
+			"Health": Health,
+			"Stamina": Stamina,
+			"Speed": Speed,
+			"currentHealth": currentHealth,
+			"currentStamina": currentStamina,
+			"isDead": isDead,
+			"pos_x": position.x,
+			"pos_y": position.y
+			}
+	else:
+		saveDict = {
+			"filename": get_filename(),
+			"parent": get_parent().get_path(),
+			"Name": Name,
+			"level": level,
+			"experience": experience,
+			"currentWeapon": currentWeapon,
+			"skillPoints": skillPoints,
+			"gold": gold,
+			"Health": Health,
+			"Stamina": Stamina,
+			"Speed": Speed,
+			"pos_x": 0,
+			"pos_y": 0
+			}
 		
 	return saveDict
 	
@@ -249,8 +292,12 @@ func skillUp(skill):
 		"Health":
 			Health += HEALTHGROWTH
 			
+			
 		"Stamina":
 			Stamina += STAMINAGROWTH
 			
 		"Speed":
 			Speed += SPEEDGROWTH
+			
+func init():
+	pass

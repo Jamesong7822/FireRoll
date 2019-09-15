@@ -5,7 +5,7 @@ var PLAYER
 
 func _ready():
 	$AnimationPlayer.play("Spawn")
-	PLAYER = $".".get_parent().get_parent().get_node("Player")
+	PLAYER = get_tree().get_nodes_in_group("Player")[0]
 	connect("Collect", PLAYER, "collectGold")
 
 func _on_Hitbox_body_entered(body):

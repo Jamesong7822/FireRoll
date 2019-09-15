@@ -6,10 +6,10 @@ func _ready():
 func _physics_process(delta):
 	updateShopInfo()
 	var mainScene = $".".get_parent().get_parent()
-	var currentWeapon = mainScene.get_node("Outdoor Map/Bushes/Player/Base/Weapon").get_child(0)
+	var currentWeapon = mainScene.get_node("Survival Map/Bushes/Player/Base/Weapon").get_child(0)
 	var upgradeCost = currentWeapon.calculateUpgradeCost()
 	$"MarginContainer/VBoxContainer/HBoxContainer/Attributes Container/Button Container/Upgrade Button".text = "Upgrade ("+str(upgradeCost)+ ")"
-	var playerScene = mainScene.get_node("Outdoor Map/Bushes/Player")
+	var playerScene = mainScene.get_node("Survival Map/Bushes/Player")
 
 	var currentGold = playerScene.gold
 	if currentGold >= upgradeCost:
@@ -21,21 +21,22 @@ func _physics_process(delta):
 
 func _on_Upgrade_Button_pressed():
 	var mainScene = $".".get_parent().get_parent()
-	var currentWeapon = mainScene.get_node("Outdoor Map/Bushes/Player/Base/Weapon").get_child(0)
+	var currentWeapon = mainScene.get_node("Survival Map/Bushes/Player/Base/Weapon").get_child(0)
 	var HUDScene = mainScene.get_node("HUD/Center Bot/Player Stats/Gold/HBoxContainer/Label")
 	var upgradeCost = currentWeapon.calculateUpgradeCost()
-	var playerScene = mainScene.get_node("Outdoor Map/Bushes/Player")
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
 	var currentGold = playerScene.gold
 	if currentGold >= upgradeCost:
 		currentWeapon.upgrade()
 		playerScene.gold -= upgradeCost
 		HUDScene.text = str(playerScene.gold)
+		$"Upgrade SFX".play()
 
 	
 func updateShopInfo():
 	# Grab current weapon stuff
 	var mainScene = get_parent().get_parent()
-	var currentWeapon = mainScene.get_node("Outdoor Map/Bushes/Player/Base/Weapon").get_child(0)
+	var currentWeapon = mainScene.get_node("Survival Map/Bushes/Player/Base/Weapon").get_child(0)
 	
 	# Update Weapon Name
 	$"MarginContainer/VBoxContainer/HBoxContainer/Weapons Container/Sub Container/Name".text = currentWeapon.Name

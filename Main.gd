@@ -1,23 +1,84 @@
 extends Node2D
 
+var thread = null
+
 export var spawnTimer = 3
 var rng = RandomNumberGenerator.new()
 
 signal SpawnEnemy
 
-var slimeScene = preload("res://Character/Enemy/Minions/Slime.tscn")
+#var slimeScene = preload("res://Character/Enemy/Minions/Slime.tscn")
+#var slimeScene = preload("res://Character/Enemy/Minions/Cobra.tscn")
+var slimeScene = preload("res://Character/Enemy/Minions/Fire Spirit.tscn")
 var GOLD = preload("res://Items/Consumables/Coins.tscn")
 var PLAYER = preload("res://Character/Player/Player.tscn")
 
 func _ready():
 	rng.randomize()
-	loadData()
-	startGame()
+	loadMap()
+	#loadPlayer()
+	#loadData()
+	#startGame()
 	# Only show Menu Page
 	#loadMenuPage()
+	$"BG Music".play()
+	
+
 	
 func loadMenuPage():
-	get_tree().change_scene("res://HUD/Menu Page.tscn")
+	var menuScene = load("res://HUD/Menu Page.tscn")
+	get_tree().change_scene_to(menuScene)
+	
+func loadResource(scenePath):
+	var loader = ResourceLoader.load_interactive(scenePath, "PackedScene")
+	var total = loader.get_stage_count()
+	var progress = $MarginContainer/CenterContainer/VBoxContainer/LoadingBar
+	progress.call_deferred("set_max", total)
+	var res = null
+	while true:
+		progress.call_deferred("set_value", loader.get_stage())
+		OS.delay_msec(200.0)
+		var err = loader.poll()
+		if err == ERR_FILE_EOF:
+			# Loading done, fetch resource
+			res = loader.get_resource().instance()
+			
+			print ("Successful load")
+			
+			break
+		elif err != OK:
+			# Error
+			print ("There was an error loading!")
+			break
+	progress.call_deferred("set_value", total)
+	call_deferred("loadResourceComplete", res)
+	
+func loadResourceComplete(resource):
+	assert (resource)
+	thread.wait_to_finish()
+	add_child(resource)
+	loadHUD()
+	loadPlayer()
+	loadData()
+	
+	startGame()
+	
+	
+func loadMap():
+	thread = Thread.new()
+	thread.start(self, "loadResource", "res://Map/Survival Map.tscn")
+
+	#var a = load("res://Map/Survival Map.tscn").instance()
+	#call_deferred("loadResourceComplete", a)
+	
+func loadHUD():
+	var a = load("res://HUD/HUD.tscn").instance()
+	add_child(a)
+	
+	
+func loadPlayer():
+	var a = PLAYER.instance()
+	$"Survival Map/Bushes".add_child(a)
 	
 func saveData(filepath=""):
 	print("Saving Game")
@@ -26,13 +87,12 @@ func saveData(filepath=""):
 	var saveNodes = get_tree().get_nodes_in_group("Saving")
 	for node in saveNodes:
 		var nodeSaveData = node.call("generateSaveData")
-		saveGame.store_line(to_json(nodeSaveData))
+		if nodeSaveData != null:
+			saveGame.store_line(to_json(nodeSaveData))
 		
 	saveGame.close()
 	
 func loadData(filepath=""):
-	# Get var player
-	var player = $"Outdoor Map/Bushes/Player"
 	# Function load data from the save file
 	print ("Loading Game")
 	var loadGame = File.new()
@@ -44,23 +104,35 @@ func loadData(filepath=""):
 	#	node.queue_free()	
 		
 	loadGame.open("res://savegame.save", File.READ)
+#	var nodesToDelete = get_tree().get_nodes_in_group("Saving")
+#	for i in nodesToDelete:
+#		i.queue_free()
 	while not loadGame.eof_reached():
 		var currentLine = parse_json(loadGame.get_line())
 		if currentLine == null:
 			continue
 		
+		
 		#var loadedNode = load(currentLine["filename"]).instance()
 		#get_node(currentLine["parent"]).add_child(loadedNode)
 		#print (currentLine)
-		# Set Player stats
+		
 		var saveNode = get_node(currentLine["parent"]).get_node(currentLine["Name"])
 		#print (saveNode)
+#		print ("Instancing: ", currentLine["filename"])
+#		var saveNode = load(currentLine["filename"]).instance()
+#		get_node(currentLine["parent"]).add_child(saveNode)
+		
 		for key in currentLine.keys():
-			if key == "filename" or key == "parent" or key == "Name":
+			if key == "filename" or key == "parent" or key == "Name" or key == "pos_x" or key == "pos_y":
 				continue
-				
+								
 			#print(currentLine["Name"], " Setting: ", key, " as ", currentLine[key]) 
 			saveNode.set(key, currentLine[key])
+			
+		if currentLine["Name"] == "Player":
+			var playerNode = get_node(currentLine["parent"]).get_node(currentLine["Name"])
+			playerNode.position = Vector2(currentLine["pos_x"], currentLine["pos_y"])
 			
 		if currentLine["Name"] == "Basic Sword":
 			var node = get_node(currentLine["parent"]).get_node(currentLine["Name"])
@@ -69,6 +141,9 @@ func loadData(filepath=""):
 			node.Knockback = int(currentLine["Knockback"])
 			node.CriticalChance = float(currentLine["CriticalChance"])
 			node.CriticalMultiplier = float(currentLine["CriticalMultiplier"])
+			
+		saveNode.init()
+			
 		
 #		player.Health = int(currentLine["health"])
 #		player.level = int(currentLine["level"])
@@ -82,20 +157,15 @@ func startGame():
 	# Reset game values here
 	# Enemy Spawn Timer
 	$EnemySpawnTimer.set_wait_time(spawnTimer)
-	$EnemySpawnTimer.start()
-	# Clear Stuff in Groups
-	for child in $"Outdoor Map/Bushes/Enemy Holder".get_children():
-		child.queue_free()
-	for child in $"Outdoor Map/Bushes/Drops Holder".get_children():
-		child.queue_free()
-	$"Outdoor Map".get_tree().paused = false
+	#$EnemySpawnTimer.start()
+	get_tree().paused = false
 	
 
 func _on_EnemySpawnTimer_timeout():
 	# Spawn Enemies
 	var enemy = slimeScene.instance()
 	# Get player pos
-	var playerPos = $"Outdoor Map/Bushes/Player".position
+	var playerPos = get_tree().get_nodes_in_group("Player")[0].position
 	# Calculate Max and Min spawn positions
 	var maxSpawn = playerPos + Vector2(500, 500)
 	var minSpawn = playerPos + Vector2(-500, -500)
@@ -104,7 +174,7 @@ func _on_EnemySpawnTimer_timeout():
 	enemyPos.x = rng.randf_range(minSpawn.x, maxSpawn.x)
 	enemyPos.y = rng.randf_range(minSpawn.y, maxSpawn.y)
 	
-	$"Outdoor Map/Bushes".add_child(enemy)
+	$"Survival Map/Bushes".add_child(enemy)
 	enemy.position = enemyPos
 	
 
@@ -125,5 +195,5 @@ func dropLoot(gold, pos):
 		var newY = rng.randi_range(-20, 20)
 		var newPos = pos + Vector2(newX, newY)
 		g.position = newPos
-		$"Outdoor Map/Bushes/Drops Holder".add_child(g)
+		add_child(g)
 	

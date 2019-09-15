@@ -8,7 +8,7 @@ func _physics_process(delta):
 	
 func update():
 	var mainScene = get_parent().get_parent()
-	var playerScene = mainScene.get_node("Outdoor Map/Bushes/Player")
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
 	# Get amount of skill points available
 	var skillPoints = playerScene.skillPoints
 	# Update the skill points
@@ -17,23 +17,29 @@ func update():
 	if skillPoints == 0:
 		for button in get_tree().get_nodes_in_group("Upgrade"):
 			button.disabled = true
-		
-	else:
-		buttonPressHandler()
-			
-func buttonPressHandler():
-	# Function calls the appropriate skillUp
-	var mainScene = get_parent().get_parent()
-	var playerScene = mainScene.get_node("Outdoor Map/Bushes/Player")
-	for button in get_tree().get_nodes_in_group("Upgrade"):
-		if button.is_pressed():
-			# Get button name
-			var skillName = button.name
-			playerScene.skillUp(skillName)
-			# Subtract player skill points
-			playerScene.skillPoints -= 1
 
 
 func _on_Back_Button_pressed():
 	get_tree().paused = false
 	queue_free()
+
+
+func _on_Health_pressed():
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
+	playerScene.skillUp("Health")
+	$Upgrade.play()
+	playerScene.skillPoints -=1
+
+
+func _on_Speed_pressed():
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
+	playerScene.skillUp("Speed")
+	$Upgrade.play()
+	playerScene.skillPoints -=1
+
+
+func _on_Stamina_pressed():
+	var playerScene = get_tree().get_nodes_in_group("Player")[0]
+	playerScene.skillUp("Stamina")
+	$Upgrade.play()
+	playerScene.skillPoints -=1

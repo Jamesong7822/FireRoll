@@ -1,12 +1,12 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://HUD/Shop HUD.gd" type="Script" id=1]
 [ext_resource path="res://HUD/Assets/PopUp.png" type="Texture" id=2]
 [ext_resource path="res://Items/Weapons/Melee/Assets/Basic_Sword.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Audio/SpendCash.wav" type="AudioStream" id=4]
 
 [node name="Shop HUD" type="CanvasLayer"]
 pause_mode = 2
-editor/display_folded = true
 script = ExtResource( 1 )
 
 [node name="Control" type="CenterContainer" parent="."]
@@ -255,5 +255,8 @@ size_flags_vertical = 8
 margin_right = 42.0
 margin_bottom = 20.0
 text = "Back"
+
+[node name="Upgrade SFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Attributes Container/Button Container/Upgrade Button" to="." method="_on_Upgrade_Button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons Container/Back Button" to="." method="_on_Back_Button_pressed"]
